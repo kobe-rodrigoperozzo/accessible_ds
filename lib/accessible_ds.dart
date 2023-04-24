@@ -1,6 +1,10 @@
 library accessible_ds;
 
-export 'src/colors.dart';
-export 'src/spacing.dart';
-export 'src/typography.dart';
-export 'src/border_radius.dart';
+// Atoms
+export 'src/atoms/colors.dart';
+export 'src/atoms/spacing.dart';
+export 'src/atoms/typography.dart';
+export 'src/atoms/border_radius.dart';
+
+// Components
+export 'src/molecules/text_button.dart';
