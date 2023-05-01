@@ -41,30 +41,30 @@ double calculateRelativeLuminance(Color color) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-Color adjustTextColorForContrast(Color textColor, Color backgroundColor, {double minContrastRatio = 4.5}) {
-  double contrastRatio = calculateContrastRatio(textColor, backgroundColor);
-  HSLColor hslTextColor = HSLColor.fromColor(textColor);
-  HSLColor hslBackgroundColor = HSLColor.fromColor(backgroundColor);
+Color adjustColorForContrast(Color mainColor, Color fixedColor, {double minContrastRatio = 4.5}) {
+  double contrastRatio = calculateContrastRatio(mainColor, fixedColor);
+  HSLColor hslmainColor = HSLColor.fromColor(mainColor);
+  HSLColor hslfixedColor = HSLColor.fromColor(fixedColor);
 
   // If the contrast ratio is already sufficient, return the original text color
   if (contrastRatio >= minContrastRatio) {
-    return textColor;
+    return mainColor;
   }
 
   // Determine whether to lighten or darken the text color based on the background color lightness
-  bool shouldLighten = hslBackgroundColor.lightness < 0.5;
+  bool shouldLighten = hslfixedColor.lightness < 0.5;
 
   // Incrementally adjust the lightness of the text color until the contrast ratio is sufficient
   while (contrastRatio < minContrastRatio) {
-    double newLightness = shouldLighten ? hslTextColor.lightness + 0.05 : hslTextColor.lightness - 0.05;
+    double newLightness = shouldLighten ? hslmainColor.lightness + 0.05 : hslmainColor.lightness - 0.05;
 
     if (newLightness < 0 || newLightness > 1) {
       // If the lightness goes out of range (0-1), the color cannot be adjusted further
       break;
     }
-    hslTextColor = hslTextColor.withLightness(newLightness);
-    contrastRatio = calculateContrastRatio(hslTextColor.toColor(), backgroundColor);
+    hslmainColor = hslmainColor.withLightness(newLightness);
+    contrastRatio = calculateContrastRatio(hslmainColor.toColor(), fixedColor);
   }
 
-  return hslTextColor.toColor();
+  return hslmainColor.toColor();
 }

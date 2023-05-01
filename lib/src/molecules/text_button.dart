@@ -1,6 +1,6 @@
-import 'package:accessible_ds/src/utils/color_contrast.dart';
 import 'package:flutter/material.dart';
 
+import 'package:accessible_ds/src/utils/color_contrast.dart';
 import 'package:accessible_ds/accessible_ds.dart';
 
 class DsTextButton extends StatelessWidget {
@@ -25,8 +25,6 @@ class DsTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color newTextColor = adjustTextColorForContrast(textColor, backgroundColor);
-
     return Semantics(
       button: true,
       label: alternativeText,
@@ -41,7 +39,7 @@ class DsTextButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            color: newTextColor,
+            color: adjustColorForContrast(textColor, backgroundColor),
           ),
         ),
       ),
