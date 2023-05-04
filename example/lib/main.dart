@@ -44,6 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'TextButton',
               onPressed: () {},
               alternativeText: 'alternative text to the text button',
+              textColor: Colors.green,
+              backgroundColor: Colors.grey,
             ),
             const SizedBox(
               height: 8,

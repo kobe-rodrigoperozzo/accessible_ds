@@ -40,6 +40,7 @@ class DsTextButton extends StatelessWidget {
           text,
           style: TextStyle(
             color: adjustColorForContrast(textColor, backgroundColor),
+            // color: textColor,
           ),
         ),
       ),
