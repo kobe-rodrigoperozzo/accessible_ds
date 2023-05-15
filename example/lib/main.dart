@@ -1,8 +1,13 @@
 import 'package:accessible_ds/accessible_ds.dart';
+import 'package:example/pages/pdp.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const DismissKeyboard(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -44,8 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'TextButton',
               onPressed: () {},
               alternativeText: 'alternative text to the text button',
-              textColor: Colors.green,
-              backgroundColor: Colors.grey,
+              textColor: DsColors.primary,
+              backgroundColor: DsColors.onPrimary,
             ),
             const SizedBox(
               height: 8,
@@ -76,9 +81,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 alternativeText: 'alternative text to the input text field',
               ),
             ),
+            const SizedBox(
+              height: 16,
+            ),
+            DsTextButton(
+              text: 'Go to PDP Page',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailPage(),
+                  ),
+                );
+              },
+              alternativeText: 'alternative text to the text button',
+              textColor: DsColors.primary,
+              backgroundColor: DsColors.onPrimary,
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+// The DismissKeybaord widget (it's reusable)
+class DismissKeyboard extends StatelessWidget {
+  final Widget child;
+  const DismissKeyboard({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: child,
     );
   }
 }

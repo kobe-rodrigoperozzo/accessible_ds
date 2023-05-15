@@ -12,6 +12,7 @@ class DsIconButton extends StatelessWidget {
   final double iconSize;
   final Color backgroundColor;
   final Color borderColor;
+  final double borderWidth;
 
   const DsIconButton({
     Key? key,
@@ -20,7 +21,8 @@ class DsIconButton extends StatelessWidget {
     required this.onPressed,
     this.iconColor = DsColors.primary,
     this.backgroundColor = DsColors.onPrimary,
-    this.borderColor = Colors.grey,
+    this.borderColor = Colors.transparent,
+    this.borderWidth = 1.0,
     this.iconSize = 24.0,
     this.padding = DsSpacing.small,
   }) : super(key: key);
@@ -31,6 +33,7 @@ class DsIconButton extends StatelessWidget {
       label: alternativeText,
       button: true,
       child: MaterialButton(
+        elevation: 0,
         child: Icon(
           icon,
           size: iconSize,
@@ -42,6 +45,7 @@ class DsIconButton extends StatelessWidget {
         shape: CircleBorder(
           side: BorderSide(
             color: borderColor,
+            width: borderWidth,
           ),
         ),
       ),
