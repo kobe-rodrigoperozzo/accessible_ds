@@ -1,11 +1,15 @@
-// ignore_for_file: library_private_types_in_public_api
+// Note: Import your models.dart file where Product class is defined
 
 import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/pdp_components.dart';
+import 'package:example/components/product.dart';
+import 'package:example/components/product_card.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({super.key});
+  final Product product;
+
+  const ProductDetailPage({required this.product, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +34,21 @@ class ProductDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Center(
+              Center(
                 child: DsImage(
-                  imageUrl: "https://imgnike-a.akamaihd.net/768x768/02569651.jpg",
+                  imageUrl: product.imageUrl,
                   altText: 'Product Image',
                   width: 300,
                   height: 300,
                 ),
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'Product Title',
+              Text(
+                product.title,
                 style: DsTypography.subtitle,
               ),
-              const Text(
-                'Product Id: 12345',
+              Text(
+                'Product Id: ${product.id}',
                 style: DsTypography.body,
               ),
               const SizedBox(height: 16.0),
@@ -52,34 +56,34 @@ class ProductDetailPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '\$50.00',
+                    '\$50.00', // Assume price as hardcoded for now
                     style: DsTypography.title.copyWith(color: DsColors.primary),
                   ),
                   Row(
                     children: List.generate(
-                      5,
+                      product.rating.round(),
                       (index) => const Icon(Icons.star, color: DsColors.primary),
                     ),
                   ),
                 ],
               ),
               Text(
-                'Sold by: seller',
+                'Sold by: ${product.seller}',
                 style: DsTypography.body.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'Product Description',
+              Text(
+                product.description,
                 style: DsTypography.body,
               ),
               const SizedBox(height: 16.0),
-              const Text('Size:', style: DsTypography.body),
-              const SizedBox(height: 4.0),
-              const SizeVariations(),
+              const Text('Variations:', style: DsTypography.body),
               const SizedBox(height: 16.0),
-              const Text('Color:', style: DsTypography.body),
-              const SizedBox(height: 4.0),
-              const ColorVariations(),
+              ...product.variations.map(
+                (e) => VariationSelector(variation: e),
+              ),
+              const SizedBox(height: 16.0),
+              ProductCard(product: product),
             ],
           ),
         ),

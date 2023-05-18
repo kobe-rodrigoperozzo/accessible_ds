@@ -1,4 +1,7 @@
 import 'package:accessible_ds/accessible_ds.dart';
+import 'package:example/components/product.dart';
+import 'package:example/pages/cart.dart';
+import 'package:example/pages/pdp.dart';
 import 'package:example/pages/pdp.dart';
 import 'package:flutter/material.dart';
 
@@ -85,12 +88,65 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 16,
             ),
             DsTextButton(
-              text: 'Go to PDP Page',
+              text: 'Go to Cart Page',
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProductDetailPage(),
+                    builder: (context) => CartPage(),
+                  ),
+                );
+              },
+              alternativeText: 'alternative text to the text button',
+              textColor: DsColors.primary,
+              backgroundColor: DsColors.onPrimary,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            DsTextButton(
+              text: 'Go to PDP2 Page',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailPage(
+                      product: Product(
+                        title: 'Product Title',
+                        id: 'Product Id',
+                        price: 50.00,
+                        seller: 'seller',
+                        imageUrl: 'https://imgnike-a.akamaihd.net/768x768/02569651.jpg',
+                        description: 'Product Description',
+                        rating: 5,
+                        variations: [
+                          Variation(
+                            type: 'Size',
+                            options: [
+                              '34',
+                              '35',
+                              '36',
+                              '37',
+                              '38',
+                              '39',
+                              '40',
+                              '41',
+                              '42',
+                              '43',
+                              '44',
+                            ],
+                          ),
+                          Variation(
+                            type: 'Colors',
+                            options: [
+                              'red',
+                              'blue',
+                              'green',
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               },

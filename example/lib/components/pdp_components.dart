@@ -1,65 +1,66 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:accessible_ds/accessible_ds.dart';
+import 'package:example/components/product.dart';
 import 'package:flutter/material.dart';
 
-class SizeVariations extends StatefulWidget {
-  const SizeVariations({super.key});
+class VariationSelector extends StatefulWidget {
+  final Variation variation;
+
+  const VariationSelector({
+    required this.variation,
+    super.key,
+  });
 
   @override
-  _SizeVariationsState createState() => _SizeVariationsState();
+  _VariationSelectorState createState() => _VariationSelectorState();
 }
 
-class _SizeVariationsState extends State<SizeVariations> {
-  final List<String> sizes = ['SMALL', 'MEDIUM', 'LARGE'];
-  String? selectedSize;
+class _VariationSelectorState extends State<VariationSelector> {
+  String? selectedVariation;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: sizes.map((String size) {
-        return DsTextButton(
-          text: size,
-          onPressed: () {
-            setState(() {
-              selectedSize = size;
-            });
-          },
-          backgroundColor: selectedSize == size ? DsColors.primary : Colors.grey,
-          alternativeText: 'size: $size',
-        );
-      }).toList(),
-    );
-  }
-}
-
-class ColorVariations extends StatefulWidget {
-  const ColorVariations({super.key});
-
-  @override
-  _ColorVariationsState createState() => _ColorVariationsState();
-}
-
-class _ColorVariationsState extends State<ColorVariations> {
-  final List<Color> colors = [Colors.red, Colors.blue, Colors.grey];
-  Color? selectedColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: colors.map((Color color) {
-        return DsIconButton(
-          icon: Icons.circle,
-          iconColor: color,
-          backgroundColor: selectedColor == color ? color : DsColors.secondary,
-          alternativeText: color.toString(),
-          onPressed: () {
-            setState(() {
-              selectedColor = color;
-            });
-          },
-        );
-      }).toList(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.variation.type,
+          style: DsTypography.body,
+        ),
+        const SizedBox(
+          height: 4.0,
+        ),
+        SizedBox(
+          height: 48,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: widget.variation.options.map((String variation) {
+              return Row(
+                children: [
+                  DsTextButton(
+                    text: variation,
+                    onPressed: () {
+                      setState(() {
+                        selectedVariation = variation;
+                        widget.variation.selectedVariation = variation;
+                      });
+                    },
+                    backgroundColor: selectedVariation == variation ? DsColors.primary : Colors.grey,
+                    alternativeText: '${widget.variation.type}: $variation',
+                  ),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+        const SizedBox(
+          height: 16.0,
+        ),
+      ],
     );
   }
 }
