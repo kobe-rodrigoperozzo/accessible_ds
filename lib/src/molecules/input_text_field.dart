@@ -29,9 +29,15 @@ class DsInputTextField extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
-          labelText: label,
-          helperText: helperText,
-        ),
+            labelText: label,
+            helperText: helperText,
+            border: const OutlineInputBorder(),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: DsColors.primary,
+                width: 1.0,
+              ),
+            )),
       ),
     );
   }

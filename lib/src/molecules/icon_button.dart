@@ -33,6 +33,7 @@ class DsIconButton extends StatelessWidget {
       label: alternativeText,
       button: true,
       child: MaterialButton(
+        minWidth: 64,
         elevation: 0,
         child: Icon(
           icon,

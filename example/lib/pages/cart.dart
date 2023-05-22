@@ -1,80 +1,135 @@
 import 'package:accessible_ds/accessible_ds.dart';
+import 'package:example/components/product.dart';
+import 'package:example/components/product_card.dart';
+import 'package:example/pages/shipping.dart';
 import 'package:flutter/material.dart';
 
-class CartProductCard extends StatelessWidget {
-  final String productName;
-  final double productPrice;
-  final int productQuantity;
-
-  const CartProductCard({
-    required this.productName,
-    required this.productPrice,
-    required this.productQuantity,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.image), // You can replace this with actual product image
-      title: Text(productName),
-      subtitle: Text('Price: \$${productPrice.toStringAsFixed(2)}'),
-      trailing: Text('Quantity: $productQuantity'),
-    );
-  }
-}
-
-class ShippingWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('Shipping simulation', style: DsTypography.body),
-        // Your shipping simulation logic goes here
-      ],
-    );
-  }
-}
-
 class CartPage extends StatelessWidget {
-  final List<Map<String, dynamic>> cartData = [
-    {'name': 'Product 1', 'price': 50.0, 'quantity': 1},
-    {'name': 'Product 2', 'price': 100.0, 'quantity': 2},
-  ];
+  final List<Product> products;
 
-  double get totalPrice {
-    double total = 0;
-    for (var product in cartData) {
-      total += product['price'] * product['quantity'];
-    }
-    return total;
+  const CartPage({required this.products, Key? key}) : super(key: key);
+
+  double getTotalPrice() {
+    return products.fold(0.0, (total, product) => total + product.price);
+  }
+
+  double getTotalDiscount() {
+    return products.fold(0.0, (total, product) => total + product.price - product.discountedPrice);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: DsColors.foundation,
       appBar: AppBar(
-        title: Text('Your Cart', style: DsTypography.title.copyWith(color: DsColors.onPrimary)),
         backgroundColor: DsColors.primary,
+        title: Text('Cart (${products.length})'),
+        actions: [
+          DsIconButton(
+            icon: Icons.remove_shopping_cart,
+            onPressed: () {
+              debugPrint('Clear cart');
+            },
+            backgroundColor: DsColors.primary,
+            iconColor: DsColors.onPrimary,
+            alternativeText: 'Clear cart',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(DsSpacing.regular),
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ...cartData
-                  .map((product) => CartProductCard(
-                        productName: product['name'],
-                        productPrice: product['price'],
-                        productQuantity: product['quantity'],
-                      ))
-                  .toList(),
-              ShippingWidget(),
-              Text(
-                'Total Price: \$${totalPrice.toStringAsFixed(2)}',
-                style: DsTypography.title.copyWith(color: DsColors.primary),
+              ...products.map((product) => ProductCard(product: product)).toList(),
+              const SizedBox(height: 16.0),
+              const Divider(
+                color: Colors.black,
+              ),
+              const SizedBox(height: 16.0),
+              const Text('Discount Code', style: DsTypography.highlight),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: DsInputTextField(
+                      label: 'Enter discount code',
+                      controller: TextEditingController(),
+                      alternativeText: 'Enter discount code',
+                    ),
+                  ),
+                  DsIconButton(
+                    icon: Icons.check,
+                    alternativeText: 'Apply coupon',
+                    onPressed: () {},
+                    backgroundColor: DsColors.primary,
+                    iconColor: DsColors.onPrimary,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16.0),
+              const Divider(
+                color: Colors.black,
+              ),
+              const SizedBox(height: 16.0),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('Summary', style: DsTypography.highlight),
+                    const SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text('Subtotal'),
+                        Text('\$${getTotalPrice().toStringAsFixed(2)}'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text('Discount'),
+                        Text('\$${getTotalDiscount().toStringAsFixed(2)}'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text('Total', style: DsTypography.highlight),
+                        Text('\$${(getTotalPrice() - getTotalDiscount()).toStringAsFixed(2)}', style: DsTypography.highlight),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: DsColors.primary,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: DsSpacing.regularPlus, vertical: DsSpacing.small),
+          child: DsTextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShippingPage(
+                    totalPrice: (getTotalPrice() - getTotalDiscount()),
+                  ),
+                ),
+              );
+            },
+            text: 'Go to Checkout',
+            backgroundColor: DsColors.primary,
+            textColor: DsColors.onPrimary,
+            alternativeText: 'Go to checkout',
           ),
         ),
       ),

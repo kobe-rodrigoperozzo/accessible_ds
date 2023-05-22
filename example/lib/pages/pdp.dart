@@ -1,9 +1,6 @@
-// Note: Import your models.dart file where Product class is defined
-
 import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/pdp_components.dart';
 import 'package:example/components/product.dart';
-import 'package:example/components/product_card.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatelessWidget {
@@ -14,6 +11,7 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: DsColors.foundation,
       appBar: AppBar(
         backgroundColor: DsColors.primary,
         actions: [
@@ -82,8 +80,6 @@ class ProductDetailPage extends StatelessWidget {
               ...product.variations.map(
                 (e) => VariationSelector(variation: e),
               ),
-              const SizedBox(height: 16.0),
-              ProductCard(product: product),
             ],
           ),
         ),

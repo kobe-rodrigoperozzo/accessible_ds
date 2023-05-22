@@ -2,6 +2,7 @@ class Product {
   final String title;
   final String id;
   final double price;
+  final double discountedPrice;
   final String seller;
   final String imageUrl;
   final String description;
@@ -17,6 +18,7 @@ class Product {
     required this.description,
     required this.rating,
     required this.variations,
+    required this.discountedPrice,
   });
 }
 

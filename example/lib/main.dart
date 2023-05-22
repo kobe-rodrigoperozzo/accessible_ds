@@ -2,7 +2,6 @@ import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/product.dart';
 import 'package:example/pages/cart.dart';
 import 'package:example/pages/pdp.dart';
-import 'package:example/pages/pdp.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -93,7 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CartPage(),
+                    builder: (context) => CartPage(
+                      products: [
+                        returnProduct(),
+                        returnProduct(),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -111,41 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetailPage(
-                      product: Product(
-                        title: 'Product Title',
-                        id: 'Product Id',
-                        price: 50.00,
-                        seller: 'seller',
-                        imageUrl: 'https://imgnike-a.akamaihd.net/768x768/02569651.jpg',
-                        description: 'Product Description',
-                        rating: 5,
-                        variations: [
-                          Variation(
-                            type: 'Size',
-                            options: [
-                              '34',
-                              '35',
-                              '36',
-                              '37',
-                              '38',
-                              '39',
-                              '40',
-                              '41',
-                              '42',
-                              '43',
-                              '44',
-                            ],
-                          ),
-                          Variation(
-                            type: 'Colors',
-                            options: [
-                              'red',
-                              'blue',
-                              'green',
-                            ],
-                          ),
-                        ],
-                      ),
+                      product: returnProduct(),
                     ),
                   ),
                 );
@@ -178,4 +148,43 @@ class DismissKeyboard extends StatelessWidget {
       child: child,
     );
   }
+}
+
+Product returnProduct() {
+  return Product(
+    title: 'Product Title',
+    id: 'Product Id',
+    price: 50.00,
+    discountedPrice: 50.00,
+    seller: 'seller',
+    imageUrl: 'https://imgnike-a.akamaihd.net/768x768/02569651.jpg',
+    description: 'Product Description',
+    rating: 5,
+    variations: [
+      Variation(
+        type: 'Size',
+        options: [
+          '34',
+          '35',
+          '36',
+          '37',
+          '38',
+          '39',
+          '40',
+          '41',
+          '42',
+          '43',
+          '44',
+        ],
+      ),
+      Variation(
+        type: 'Colors',
+        options: [
+          'red',
+          'blue',
+          'green',
+        ],
+      ),
+    ],
+  );
 }

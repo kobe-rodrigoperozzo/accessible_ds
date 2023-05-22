@@ -6,7 +6,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final int quantity;
 
-  ProductCard({required this.product, this.quantity = 1});
+  const ProductCard({super.key, required this.product, this.quantity = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProductCard extends StatelessWidget {
                   width: 100,
                   height: 100,
                 ),
-                SizedBox(width: 16.0),
+                const SizedBox(width: 16.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -34,15 +34,15 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       product.id,
-                      style: DsTypography.normal.copyWith(color: Colors.grey),
+                      style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
                     ),
                     Text(
                       '\$${product.price.toStringAsFixed(2)}',
-                      style: DsTypography.normal.copyWith(color: Colors.grey),
+                      style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
                     ),
                     Text(
                       'Quantity: $quantity',
-                      style: DsTypography.normal.copyWith(color: Colors.black),
+                      style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
                     ),
                   ],
                 ),
