@@ -1,12 +1,30 @@
 import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/pdp_components.dart';
 import 'package:example/components/product.dart';
+import 'package:example/pages/cart.dart';
 import 'package:flutter/material.dart';
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends StatefulWidget {
   final Product product;
 
   const ProductDetailPage({required this.product, Key? key}) : super(key: key);
+
+  @override
+  _ProductDetailPageState createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  late List<Variation> _selectedVariations;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedVariations = widget.product.variations;
+  }
+
+  _checkVariations() {
+    return _selectedVariations.every((variation) => variation.selectedVariation != null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +52,7 @@ class ProductDetailPage extends StatelessWidget {
             children: <Widget>[
               Center(
                 child: DsImage(
-                  imageUrl: product.imageUrl,
+                  imageUrl: widget.product.imageUrl,
                   altText: 'Product Image',
                   width: 300,
                   height: 300,
@@ -42,11 +60,11 @@ class ProductDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               Text(
-                product.title,
+                widget.product.title,
                 style: DsTypography.subtitle,
               ),
               Text(
-                'Product Id: ${product.id}',
+                'Product Id: ${widget.product.id}',
                 style: DsTypography.body,
               ),
               const SizedBox(height: 16.0),
@@ -59,27 +77,32 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                   Row(
                     children: List.generate(
-                      product.rating.round(),
+                      widget.product.rating.round(),
                       (index) => const Icon(Icons.star, color: DsColors.primary),
                     ),
                   ),
                 ],
               ),
               Text(
-                'Sold by: ${product.seller}',
+                'Sold by: ${widget.product.seller}',
                 style: DsTypography.body.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 16.0),
               Text(
-                product.description,
+                widget.product.description,
                 style: DsTypography.body,
               ),
               const SizedBox(height: 16.0),
-              const Text('Variations:', style: DsTypography.body),
-              const SizedBox(height: 16.0),
-              ...product.variations.map(
-                (e) => VariationSelector(variation: e),
-              ),
+              ..._selectedVariations.asMap().entries.map(
+                    (entry) => VariationSelector(
+                      variation: entry.value,
+                      onChanged: (updatedVariation, selectedOption) {
+                        setState(() {
+                          _selectedVariations[entry.key] = updatedVariation;
+                        });
+                      },
+                    ),
+                  ),
             ],
           ),
         ),
@@ -90,7 +113,33 @@ class ProductDetailPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: DsSpacing.regularPlus, vertical: DsSpacing.small),
           child: DsTextButton(
             onPressed: () {
-              debugPrint('Add to cart');
+              if (_checkVariations()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  DsSnackBar(
+                    duration: const Duration(seconds: 7),
+                    text: 'Product added.',
+                    actionLabel: 'Go to cart',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CartPage(
+                            products: [
+                              widget.product,
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  DsSnackBar(
+                    text: 'Please, select all variations.',
+                  ),
+                );
+              }
             },
             text: 'Add to Cart',
             backgroundColor: DsColors.primary,

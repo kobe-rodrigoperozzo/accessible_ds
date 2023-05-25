@@ -16,19 +16,52 @@ class _ShippingPageState extends State<ShippingPage> {
   List<Address> addresses = [];
 
   void addAddress() {
-    setState(() {
-      addresses.add(
-        Address(
-          postalCode: '12345',
-          streetName: 'Street Name',
-          number: '123',
-          complement: 'Apt 4B',
-          neighborhood: 'Neighborhood',
-          city: 'City',
-          country: 'Country',
-        ),
-      );
-    });
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: DsColors.foundation,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 24.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Center(
+                  child: Text(
+                    'Cadastrar um novo endereço',
+                    style: DsTypography.body,
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    // setState(() {
+    //   addresses.add(
+    //     Address(
+    //       postalCode: '12345',
+    //       streetName: 'Street Name',
+    //       number: '123',
+    //       complement: 'Apt 4B',
+    //       neighborhood: 'Neighborhood',
+    //       city: 'City',
+    //       country: 'Country',
+    //     ),
+    //   );
+    // });
   }
 
   @override

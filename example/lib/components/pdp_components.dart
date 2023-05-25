@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 
 class VariationSelector extends StatefulWidget {
   final Variation variation;
+  final Function(Variation, String) onChanged;
 
   const VariationSelector({
     required this.variation,
+    required this.onChanged,
     super.key,
   });
 
@@ -44,6 +46,7 @@ class _VariationSelectorState extends State<VariationSelector> {
                       setState(() {
                         selectedVariation = variation;
                         widget.variation.selectedVariation = variation;
+                        widget.onChanged(widget.variation, variation);
                       });
                     },
                     backgroundColor: selectedVariation == variation ? DsColors.primary : Colors.grey,
