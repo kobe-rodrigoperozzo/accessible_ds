@@ -4,17 +4,45 @@ import 'package:example/components/product_card.dart';
 import 'package:example/pages/shipping.dart';
 import 'package:flutter/material.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   final List<Product> products;
 
   const CartPage({required this.products, Key? key}) : super(key: key);
 
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  void updateProductQuantity(Product product, int quantity) {
+    setState(() {
+      product.quantity.value = quantity;
+    });
+  }
+
+  double discount = 0;
+  final TextEditingController discountController = TextEditingController();
+
   double getTotalPrice() {
-    return products.fold(0.0, (total, product) => total + product.price);
+    return widget.products.fold(0.0, (total, product) => total + product.price * product.quantity.value);
   }
 
   double getTotalDiscount() {
-    return products.fold(0.0, (total, product) => total + product.price - product.discountedPrice);
+    return widget.products.fold(0.0, (total, product) => total + (product.price - product.discountedPrice) * product.quantity.value) + discount;
+  }
+
+  void applyDiscount() {
+    if (discountController.text.isNotEmpty) {
+      setState(() {
+        discount = getTotalPrice() * 0.2; // 20% discount
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    discountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -23,7 +51,7 @@ class CartPage extends StatelessWidget {
       backgroundColor: DsColors.foundation,
       appBar: AppBar(
         backgroundColor: DsColors.primary,
-        title: Text('Cart (${products.length})'),
+        title: Text('Cart (${widget.products.length})'),
         actions: [
           DsIconButton(
             icon: Icons.remove_shopping_cart,
@@ -42,7 +70,12 @@ class CartPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ...products.map((product) => ProductCard(product: product)).toList(),
+              ...widget.products
+                  .map((product) => ProductCard(
+                        product: product,
+                        onQuantityChanged: (quantity) => updateProductQuantity(product, quantity),
+                      ))
+                  .toList(),
               const SizedBox(height: 16.0),
               const Divider(
                 color: Colors.black,
@@ -57,7 +90,7 @@ class CartPage extends StatelessWidget {
                   Expanded(
                     child: DsInputTextField(
                       label: 'Enter discount code',
-                      controller: TextEditingController(),
+                      controller: discountController,
                       alternativeText: 'Enter discount code',
                     ),
                   ),
@@ -67,7 +100,7 @@ class CartPage extends StatelessWidget {
                   DsIconButton(
                     icon: Icons.check,
                     alternativeText: 'Apply coupon',
-                    onPressed: () {},
+                    onPressed: applyDiscount,
                     backgroundColor: DsColors.primary,
                     iconColor: DsColors.onPrimary,
                   ),

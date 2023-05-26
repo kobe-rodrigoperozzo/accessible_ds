@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Product {
   final String title;
   final String id;
@@ -8,6 +10,7 @@ class Product {
   final String description;
   final double rating;
   final List<Variation> variations;
+  ValueNotifier<int> quantity;
 
   Product({
     required this.title,
@@ -19,7 +22,8 @@ class Product {
     required this.rating,
     required this.variations,
     required this.discountedPrice,
-  });
+    int initialQuantity = 1,
+  }) : quantity = ValueNotifier<int>(initialQuantity);
 }
 
 class Variation {

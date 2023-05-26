@@ -5,16 +5,38 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatefulWidget {
   final Product product;
   int quantity;
+  final ValueChanged<int> onQuantityChanged;
 
-  ProductCard({Key? key, required this.product, this.quantity = 1}) : super(key: key);
+  ProductCard({
+    Key? key,
+    required this.product,
+    this.quantity = 1,
+    required this.onQuantityChanged,
+  }) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
+  @override
+  void initState() {
+    super.initState();
+    widget.product.quantity.addListener(_updateQuantity);
+  }
+
+  @override
+  void dispose() {
+    widget.product.quantity.removeListener(_updateQuantity);
+    super.dispose();
+  }
+
+  _updateQuantity() {
+    setState(() {});
+  }
+
   _editQuantity(BuildContext context) async {
-    TextEditingController quantityController = TextEditingController(text: widget.quantity.toString());
+    TextEditingController quantityController = TextEditingController(text: widget.product.quantity.value.toString());
     FocusNode focusNode = FocusNode();
 
     return showDialog(
@@ -42,9 +64,8 @@ class _ProductCardState extends State<ProductCard> {
               DsTextButton(
                 text: 'OK',
                 onPressed: () {
-                  setState(() {
-                    widget.quantity = int.parse(quantityController.text);
-                  });
+                  widget.product.quantity.value = int.parse(quantityController.text);
+                  widget.onQuantityChanged(widget.product.quantity.value);
                   Navigator.of(context).pop();
                 },
                 alternativeText: 'Confirm edit',
@@ -93,7 +114,7 @@ class _ProductCardState extends State<ProductCard> {
                       );
                     }).toList(),
                     Text(
-                      'Quantity: ${widget.quantity}',
+                      'Quantity: ${widget.product.quantity.value}',
                       style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
                     ),
                   ],
