@@ -16,32 +16,138 @@ class _ShippingPageState extends State<ShippingPage> {
   List<Address> addresses = [];
 
   void addAddress() {
+    TextEditingController postalCodeController = TextEditingController();
+    TextEditingController streetController = TextEditingController();
+    TextEditingController numberController = TextEditingController();
+    TextEditingController complementController = TextEditingController();
+    TextEditingController neighborhoodController = TextEditingController();
+    TextEditingController cityController = TextEditingController();
+
     showModalBottomSheet<void>(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          color: DsColors.foundation,
+        return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 24.0,
+              horizontal: 12.0,
+              vertical: 32.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Center(
+                Center(
                   child: Text(
                     'Cadastrar um novo endereço',
-                    style: DsTypography.body,
+                    style: DsTypography.body.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
+                const SizedBox(height: 8),
+                const Text('Postal Code', style: DsTypography.body),
+                const SizedBox(height: 4),
+                DsInputTextField(
+                  controller: postalCodeController,
+                  label: 'Postal Code',
+                  alternativeText: 'Postal Code',
+                  keyboardType: TextInputType.number,
                 ),
-                ElevatedButton(
-                  child: const Text('Close BottomSheet'),
-                  onPressed: () => Navigator.pop(context),
+                const SizedBox(height: 12),
+                const Text('Street', style: DsTypography.body),
+                const SizedBox(height: 4),
+                DsInputTextField(
+                  controller: streetController,
+                  label: 'Street',
+                  alternativeText: 'Street',
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Number', style: DsTypography.body),
+                          const SizedBox(height: 4),
+                          DsInputTextField(
+                            controller: numberController,
+                            label: 'Number',
+                            alternativeText: 'Number',
+                            keyboardType: TextInputType.number,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Complement', style: DsTypography.body),
+                          const SizedBox(height: 4),
+                          DsInputTextField(
+                            controller: complementController,
+                            label: 'Complement',
+                            alternativeText: 'Complement',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Neighborhood', style: DsTypography.body),
+                          const SizedBox(height: 4),
+                          DsInputTextField(
+                            controller: neighborhoodController,
+                            label: 'Neighborhood',
+                            alternativeText: 'Neighborhood',
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('City', style: DsTypography.body),
+                          const SizedBox(height: 4),
+                          DsInputTextField(
+                            controller: cityController,
+                            label: 'City',
+                            alternativeText: 'City',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    DsTextButton(
+                      text: 'Close',
+                      onPressed: () => Navigator.pop(context),
+                      alternativeText: 'Close',
+                    ),
+                    DsTextButton(
+                      text: 'Register',
+                      onPressed: () {
+                        // Register address logic
+                        Navigator.pop(context);
+                      },
+                      alternativeText: 'Register',
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -49,19 +155,6 @@ class _ShippingPageState extends State<ShippingPage> {
         );
       },
     );
-    // setState(() {
-    //   addresses.add(
-    //     Address(
-    //       postalCode: '12345',
-    //       streetName: 'Street Name',
-    //       number: '123',
-    //       complement: 'Apt 4B',
-    //       neighborhood: 'Neighborhood',
-    //       city: 'City',
-    //       country: 'Country',
-    //     ),
-    //   );
-    // });
   }
 
   @override
