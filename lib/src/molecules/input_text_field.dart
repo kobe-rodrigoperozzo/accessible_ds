@@ -8,6 +8,7 @@ class DsInputTextField extends StatelessWidget {
   final String? helperText;
   final TextInputType keyboardType;
   final TextStyle inputTextStyle;
+  final TextInputAction textInputAction;
 
   const DsInputTextField({
     Key? key,
@@ -17,6 +18,7 @@ class DsInputTextField extends StatelessWidget {
     this.helperText,
     this.keyboardType = TextInputType.text,
     this.inputTextStyle = DsTypography.body,
+    this.textInputAction = TextInputAction.done,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class DsInputTextField extends StatelessWidget {
         style: inputTextStyle,
         controller: controller,
         keyboardType: keyboardType,
+        textInputAction: textInputAction,
         decoration: InputDecoration(
             labelText: label,
             helperText: helperText,

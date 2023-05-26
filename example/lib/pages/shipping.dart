@@ -3,6 +3,8 @@ import 'package:example/components/address.dart';
 import 'package:example/components/address_card.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
+
 class ShippingPage extends StatefulWidget {
   final double totalPrice;
 
@@ -14,6 +16,7 @@ class ShippingPage extends StatefulWidget {
 
 class _ShippingPageState extends State<ShippingPage> {
   List<Address> addresses = [];
+  int selectedAddressIndex = -1;
 
   void addAddress() {
     TextEditingController postalCodeController = TextEditingController();
@@ -29,9 +32,11 @@ class _ShippingPageState extends State<ShippingPage> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 32.0,
+            padding: EdgeInsets.fromLTRB(
+              DsSpacing.regular,
+              DsSpacing.huge,
+              DsSpacing.regular,
+              MediaQuery.of(context).viewInsets.bottom + DsSpacing.bigger,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,21 +48,21 @@ class _ShippingPageState extends State<ShippingPage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text('Postal Code', style: DsTypography.body),
                 const SizedBox(height: 4),
                 DsInputTextField(
                   controller: postalCodeController,
                   label: 'Postal Code',
                   alternativeText: 'Postal Code',
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(signed: true),
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
-                const Text('Street', style: DsTypography.body),
                 const SizedBox(height: 4),
                 DsInputTextField(
                   controller: streetController,
                   label: 'Street',
                   alternativeText: 'Street',
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -67,13 +72,13 @@ class _ShippingPageState extends State<ShippingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Number', style: DsTypography.body),
                           const SizedBox(height: 4),
                           DsInputTextField(
                             controller: numberController,
                             label: 'Number',
                             alternativeText: 'Number',
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(signed: true),
+                            textInputAction: TextInputAction.next,
                           ),
                         ],
                       ),
@@ -83,12 +88,12 @@ class _ShippingPageState extends State<ShippingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Complement', style: DsTypography.body),
                           const SizedBox(height: 4),
                           DsInputTextField(
                             controller: complementController,
                             label: 'Complement',
                             alternativeText: 'Complement',
+                            textInputAction: TextInputAction.next,
                           ),
                         ],
                       ),
@@ -103,12 +108,12 @@ class _ShippingPageState extends State<ShippingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Neighborhood', style: DsTypography.body),
                           const SizedBox(height: 4),
                           DsInputTextField(
                             controller: neighborhoodController,
                             label: 'Neighborhood',
                             alternativeText: 'Neighborhood',
+                            textInputAction: TextInputAction.next,
                           ),
                         ],
                       ),
@@ -118,12 +123,12 @@ class _ShippingPageState extends State<ShippingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('City', style: DsTypography.body),
                           const SizedBox(height: 4),
                           DsInputTextField(
                             controller: cityController,
                             label: 'City',
                             alternativeText: 'City',
+                            textInputAction: TextInputAction.done,
                           ),
                         ],
                       ),
@@ -135,6 +140,8 @@ class _ShippingPageState extends State<ShippingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     DsTextButton(
+                      backgroundColor: DsColors.foundation,
+                      textColor: Colors.black,
                       text: 'Close',
                       onPressed: () => Navigator.pop(context),
                       alternativeText: 'Close',
@@ -142,8 +149,33 @@ class _ShippingPageState extends State<ShippingPage> {
                     DsTextButton(
                       text: 'Register',
                       onPressed: () {
-                        // Register address logic
-                        Navigator.pop(context);
+                        if (postalCodeController.text.isNotEmpty &&
+                            streetController.text.isNotEmpty &&
+                            numberController.text.isNotEmpty &&
+                            complementController.text.isNotEmpty &&
+                            neighborhoodController.text.isNotEmpty &&
+                            cityController.text.isNotEmpty) {
+                          final newAddress = Address(
+                            postalCode: postalCodeController.text,
+                            streetName: streetController.text,
+                            number: numberController.text,
+                            complement: complementController.text,
+                            neighborhood: neighborhoodController.text,
+                            city: cityController.text,
+                          );
+                          setState(() {
+                            addresses.add(newAddress);
+                          });
+                          // Register address logic
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            DsSnackBar(
+                              duration: const Duration(seconds: 3),
+                              text: 'Por favor, preencha todos os campos de endereço.',
+                            ),
+                          );
+                        }
                       },
                       alternativeText: 'Register',
                     ),
@@ -182,13 +214,32 @@ class _ShippingPageState extends State<ShippingPage> {
                 ],
               ),
             )
-          : ListView.builder(
-              itemCount: addresses.length,
-              itemBuilder: (context, index) {
-                return AddressCard(
-                  address: addresses[index],
-                );
-              },
+          : ListView(
+              children: [
+                ...addresses
+                    .mapIndexed((index, address) => AddressCard(
+                          address: address,
+                          index: index,
+                          isSelected: selectedAddressIndex == index,
+                          onSelect: (index) {
+                            setState(() {
+                              selectedAddressIndex = index;
+                            });
+                          },
+                        ))
+                    .toList(),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DsTextButton(
+                    onPressed: addAddress,
+                    text: 'Add an address',
+                    alternativeText: 'Add an address',
+                  ),
+                ),
+              ],
             ),
       bottomNavigationBar: BottomAppBar(
         color: DsColors.primary,

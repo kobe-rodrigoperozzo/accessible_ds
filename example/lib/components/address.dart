@@ -4,7 +4,7 @@ class Address {
   final String number;
   final String neighborhood;
   final String city;
-  final String country;
+  final String? country;
   final String? complement;
 
   Address({
@@ -13,7 +13,7 @@ class Address {
     required this.number,
     required this.neighborhood,
     required this.city,
-    required this.country,
+    this.country,
     this.complement,
   });
 }

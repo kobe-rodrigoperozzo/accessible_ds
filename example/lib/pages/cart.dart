@@ -61,6 +61,9 @@ class CartPage extends StatelessWidget {
                       alternativeText: 'Enter discount code',
                     ),
                   ),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
                   DsIconButton(
                     icon: Icons.check,
                     alternativeText: 'Apply coupon',
@@ -86,15 +89,28 @@ class CartPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        const Text('Subtotal'),
-                        Text('\$${getTotalPrice().toStringAsFixed(2)}'),
+                        const Text(
+                          'Subtotal',
+                          style: DsTypography.body,
+                        ),
+                        Text(
+                          '\$${getTotalPrice().toStringAsFixed(2)}',
+                          style: DsTypography.body,
+                        ),
                       ],
                     ),
+                    const SizedBox(height: 4.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        const Text('Discount'),
-                        Text('\$${getTotalDiscount().toStringAsFixed(2)}'),
+                        const Text(
+                          'Discount',
+                          style: DsTypography.body,
+                        ),
+                        Text(
+                          '\$${getTotalDiscount().toStringAsFixed(2)}',
+                          style: DsTypography.body,
+                        ),
                       ],
                     ),
                     Row(
@@ -107,6 +123,7 @@ class CartPage extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 8.0),
             ],
           ),
         ),

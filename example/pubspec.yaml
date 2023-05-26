@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   accessible_ds:
     path: ../
+  collection: ^1.17.0
 
 dev_dependencies:
   flutter_test:
