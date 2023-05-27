@@ -2,6 +2,7 @@ import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/product.dart';
 import 'package:example/pages/cart.dart';
 import 'package:example/pages/pdp.dart';
+import 'package:example/utils/return_products.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -93,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(
                     builder: (context) => CartPage(
                       products: [
-                        returnProduct(),
-                        returnProduct(),
+                        returnTenis(),
+                        returnCamiseta()..variations.first.selectedVariation = 'M',
                       ],
                     ),
                   ),
@@ -108,13 +109,13 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 16,
             ),
             DsTextButton(
-              text: 'Go to PDP2 Page',
+              text: 'Go to PDP Page',
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetailPage(
-                      product: returnProduct(),
+                      product: returnTenis(),
                     ),
                   ),
                 );
@@ -147,44 +148,4 @@ class DismissKeyboard extends StatelessWidget {
       child: child,
     );
   }
-}
-
-Product returnProduct() {
-  return Product(
-    title: 'Tênis Modelo 5',
-    id: 'T5A3B3',
-    price: 50.00,
-    discountedPrice: 50.00,
-    seller: 'Loja ABC',
-    imageUrl: 'https://imgnike-a.akamaihd.net/768x768/02569651.jpg',
-    description:
-        'Quando seus treinos chegam ao âmago da questão, o Tênis Modelo 5 pode encontrá-lo nas profundezas, ajudá-lo a cavar fundo para encontrar aquela gota final de força e sair do outro lado em alta. Ele combina estilo com substância, flexibilidade do antepé com estabilidade de backend, perfeito para voar durante um dia de cardio ou melhorar sua agilidade. Um cabedal renovado facilita na hora de calçar com um colarinho feito para o seu tornozelo.',
-    rating: 4,
-    variations: [
-      Variation(
-        type: 'Tamanho',
-        options: [
-          '34',
-          '35',
-          '36',
-          '37',
-          '38',
-          '39',
-          '40',
-          '41',
-          '42',
-          '43',
-          '44',
-        ],
-      ),
-      Variation(
-        type: 'Cor',
-        options: [
-          'Vermelho',
-          'Azul',
-          'Verde',
-        ],
-      ),
-    ],
-  );
 }

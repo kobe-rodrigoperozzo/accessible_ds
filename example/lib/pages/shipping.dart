@@ -21,8 +21,8 @@ class _ShippingPageState extends State<ShippingPage> {
   int? selectedAddressIndex;
 
   List<ShippingMethod> shippingMethods = [
-    ShippingMethod(method: 'Mais rápido', price: 10.0),
-    ShippingMethod(method: 'Mais barato', price: 5.0),
+    ShippingMethod(method: 'Mais rápido', price: 12.50, eta: '1-2 dias'),
+    ShippingMethod(method: 'Mais barato', price: 4.90, eta: '4-5 dias'),
   ];
   int? selectedShippingMethodIndex;
 
@@ -33,7 +33,7 @@ class _ShippingPageState extends State<ShippingPage> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return AddressFormBottomSheet();
+        return const AddressFormBottomSheet();
       },
     ).then((newAddress) {
       if (newAddress != null) {
@@ -82,6 +82,50 @@ class _ShippingPageState extends State<ShippingPage> {
                               selectedShippingMethodIndex = null;
                             });
                           },
+                          onDelete: (index) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Center(child: Text('Remover endereço')),
+                                    content: const Text('Deseja remover o endereço cadastrado?'),
+                                    actions: <Widget>[
+                                      Center(
+                                        child: DsTextButton(
+                                          text: 'Confirmar',
+                                          onPressed: () {
+                                            setState(() {
+                                              addresses.removeAt(index);
+                                              if (selectedAddressIndex == index) {
+                                                selectedAddressIndex = null;
+                                              }
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          alternativeText: 'Confirmar.',
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      Center(
+                                        child: DsTextButton(
+                                          text: 'Cancelar',
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          alternativeText: 'Cancelar.',
+                                          backgroundColor: Colors.transparent,
+                                          textColor: DsColors.primary,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 28.0,
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
                         ))
                     .toList(),
                 const SizedBox(
@@ -101,6 +145,7 @@ class _ShippingPageState extends State<ShippingPage> {
                   ),
                   ...shippingMethods.mapIndexed(
                     (index, method) => ShippingMethodCard(
+                      eta: method.eta,
                       method: method.method,
                       price: method.price,
                       index: index,

@@ -2,6 +2,7 @@ import 'package:accessible_ds/accessible_ds.dart';
 import 'package:example/components/pdp_components.dart';
 import 'package:example/components/product.dart';
 import 'package:example/pages/cart.dart';
+import 'package:example/utils/return_products.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -39,9 +40,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  // TODO: add another product
                   builder: (context) => CartPage(
-                    products: [],
+                    products: [
+                      returnCamiseta(),
+                    ],
                   ),
                 ),
               );
@@ -61,7 +63,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Center(
                 child: DsImage(
                   imageUrl: widget.product.imageUrl,
-                  altText: 'Imagem: Tênis Modelo 5 Masculino',
+                  altText: 'Imagem: Tênis Modelo 5 Masculino. Tênis de corrida com amortecedor.',
                   width: 300,
                   height: 300,
                 ),
@@ -156,12 +158,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             child: DsTextButton(
                               text: 'Ir para o carrinho',
                               onPressed: () {
+                                Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CartPage(
                                       products: [
                                         getSelectedProductWithVariations(),
+                                        returnCamiseta()..variations.first.selectedVariation = 'M',
                                       ],
                                     ),
                                   ),

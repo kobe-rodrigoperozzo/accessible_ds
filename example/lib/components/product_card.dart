@@ -85,11 +85,13 @@ class _ProductCardState extends State<ProductCard> {
           children: <Widget>[
             Row(
               children: [
-                DsImage(
-                  imageUrl: widget.product.imageUrl,
-                  altText: 'Imagem: Tênis Modelo 5 Masculino',
-                  width: 90,
-                  height: 90,
+                ExcludeSemantics(
+                  child: DsImage(
+                    imageUrl: widget.product.imageUrl,
+                    altText: 'Imagem: Tênis Modelo 5 Masculino',
+                    width: 90,
+                    height: 90,
+                  ),
                 ),
                 const SizedBox(width: 16.0),
                 Column(
@@ -127,7 +129,8 @@ class _ProductCardState extends State<ProductCard> {
                 DsIconButton(
                   icon: Icons.delete,
                   onPressed: () {
-                    debugPrint('Remover item');
+                    widget.product.quantity.value = 0;
+                    widget.onQuantityChanged(widget.product.quantity.value);
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,

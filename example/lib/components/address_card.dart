@@ -7,8 +7,16 @@ class AddressCard extends StatefulWidget {
   final bool isSelected;
   final int index;
   final Function(int) onSelect;
+  final Function(int) onDelete;
 
-  const AddressCard({required this.address, required this.index, required this.isSelected, Key? key, required this.onSelect}) : super(key: key);
+  const AddressCard({
+    required this.address,
+    required this.index,
+    required this.isSelected,
+    Key? key,
+    required this.onSelect,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   State<AddressCard> createState() => _AddressCardState();
@@ -87,7 +95,7 @@ class _AddressCardState extends State<AddressCard> {
                 DsIconButton(
                   icon: Icons.delete,
                   onPressed: () {
-                    debugPrint('Delete address');
+                    widget.onDelete(widget.index);
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,

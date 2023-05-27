@@ -7,10 +7,17 @@ class ShippingMethodCard extends StatefulWidget {
   final bool isSelected;
   final int index;
   final Function(int) onSelect;
+  final String eta;
 
-  const ShippingMethodCard(
-      {required this.method, required this.price, required this.index, required this.isSelected, Key? key, required this.onSelect})
-      : super(key: key);
+  const ShippingMethodCard({
+    required this.method,
+    required this.price,
+    required this.index,
+    required this.isSelected,
+    Key? key,
+    required this.onSelect,
+    required this.eta,
+  }) : super(key: key);
 
   @override
   State<ShippingMethodCard> createState() => _ShippingMethodCardState();
@@ -41,15 +48,30 @@ class _ShippingMethodCardState extends State<ShippingMethodCard> {
                   alternativeText: widget.isSelected ? 'Shipping method selected' : 'Select this shipping method',
                 ),
                 const SizedBox(width: 16.0),
-                Text(
-                  widget.method,
-                  style: DsTypography.body.copyWith(color: Colors.black),
+                MergeSemantics(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.method,
+                        style: DsTypography.body.copyWith(color: Colors.black),
+                      ),
+                      const SizedBox(
+                        height: 2.0,
+                      ),
+                      Text(
+                        'Tempo estimado: ${widget.eta}', // New line for ETA
+                        style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
             Text(
-              '\$${widget.price.toStringAsFixed(2)}',
+              'R\$${widget.price.toStringAsFixed(2)}',
               style: DsTypography.body.copyWith(color: Colors.black),
+              semanticsLabel: '${widget.price.toStringAsFixed(2)} reais',
             ),
           ],
         ),
