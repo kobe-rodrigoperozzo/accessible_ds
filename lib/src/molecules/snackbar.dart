@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 class DsSnackBar extends SnackBar {
   DsSnackBar({
@@ -15,5 +16,7 @@ class DsSnackBar extends SnackBar {
           ),
           duration: duration,
           action: actionLabel != null ? SnackBarAction(label: actionLabel, onPressed: onPressed ?? () {}) : null,
-        );
+        ) {
+    SemanticsService.announce(text, TextDirection.ltr);
+  }
 }

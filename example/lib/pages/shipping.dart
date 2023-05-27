@@ -230,7 +230,7 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       const SizedBox(height: 4),
                       DsInputTextField(
                         controller: numberController,
-                        label: 'Número.',
+                        label: 'Número',
                         alternativeText: 'Inserir o número.',
                         keyboardType: const TextInputType.numberWithOptions(signed: true),
                         textInputAction: TextInputAction.next,

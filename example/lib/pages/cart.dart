@@ -14,6 +14,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  bool? isCouponValid;
   void updateProductQuantity(Product product, int quantity) {
     setState(() {
       product.quantity.value = quantity;
@@ -32,22 +33,9 @@ class _CartPageState extends State<CartPage> {
   }
 
   void applyDiscount() {
-    if (discountController.text.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        DsSnackBar(
-          text: 'Desconto aplicado com sucesso.',
-        ),
-      );
-      setState(() {
-        discount = getTotalPrice() * 0.2; // 20% discount
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        DsSnackBar(
-          text: 'Por favor, insira um cupom de desconto.',
-        ),
-      );
-    }
+    setState(() {
+      isCouponValid = discountController.text.isNotEmpty;
+    });
   }
 
   @override
@@ -62,7 +50,10 @@ class _CartPageState extends State<CartPage> {
       backgroundColor: DsColors.foundation,
       appBar: AppBar(
         backgroundColor: DsColors.primary,
-        title: Text('Carrinho (${widget.products.length})'),
+        title: Text(
+          'Carrinho (${widget.products.length})',
+          semanticsLabel: 'Carrinho',
+        ),
         actions: [
           DsIconButton(
             icon: Icons.remove_shopping_cart,
@@ -118,6 +109,36 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 4.0,
+              ),
+              isCouponValid != null
+                  ? isCouponValid!
+                      ? Semantics(
+                          liveRegion: true,
+                          child: Visibility(
+                            visible: isCouponValid ?? false,
+                            child: Center(
+                              child: Text(
+                                'Cupom aplicado com sucesso!',
+                                style: DsTypography.body.copyWith(color: DsColors.secondary),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Semantics(
+                          liveRegion: true,
+                          child: Visibility(
+                            visible: !(isCouponValid ?? false),
+                            child: Center(
+                              child: Text(
+                                'Cupom inválido',
+                                style: DsTypography.body.copyWith(color: DsColors.error),
+                              ),
+                            ),
+                          ),
+                        )
+                  : Container(),
               const SizedBox(height: 16.0),
               const Divider(
                 color: Colors.black,

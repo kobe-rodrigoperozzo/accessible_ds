@@ -27,7 +27,7 @@ class DsTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Botão: $alternativeText',
+      label: alternativeText,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,

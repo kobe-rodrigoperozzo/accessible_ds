@@ -31,7 +31,7 @@ class DsIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Botão: $alternativeText',
+      label: alternativeText,
       button: true,
       onTap: onPressed,
       child: Container(
