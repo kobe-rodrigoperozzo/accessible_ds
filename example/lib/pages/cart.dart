@@ -33,9 +33,20 @@ class _CartPageState extends State<CartPage> {
 
   void applyDiscount() {
     if (discountController.text.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        DsSnackBar(
+          text: 'Desconto aplicado com sucesso.',
+        ),
+      );
       setState(() {
         discount = getTotalPrice() * 0.2; // 20% discount
       });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        DsSnackBar(
+          text: 'Por favor, insira um cupom de desconto.',
+        ),
+      );
     }
   }
 
@@ -51,16 +62,17 @@ class _CartPageState extends State<CartPage> {
       backgroundColor: DsColors.foundation,
       appBar: AppBar(
         backgroundColor: DsColors.primary,
-        title: Text('Cart (${widget.products.length})'),
+        title: Text('Carrinho (${widget.products.length})'),
         actions: [
           DsIconButton(
             icon: Icons.remove_shopping_cart,
             onPressed: () {
+              // TODO: clear cart
               debugPrint('Clear cart');
             },
             backgroundColor: DsColors.primary,
             iconColor: DsColors.onPrimary,
-            alternativeText: 'Clear cart',
+            alternativeText: 'Limpar carrinho.',
           ),
         ],
       ),
@@ -81,7 +93,7 @@ class _CartPageState extends State<CartPage> {
                 color: Colors.black,
               ),
               const SizedBox(height: 16.0),
-              const Text('Discount Code', style: DsTypography.highlight),
+              const Text('Cupom de desconto', style: DsTypography.highlight),
               const SizedBox(
                 height: 8.0,
               ),
@@ -89,9 +101,9 @@ class _CartPageState extends State<CartPage> {
                 children: [
                   Expanded(
                     child: DsInputTextField(
-                      label: 'Enter discount code',
+                      label: 'Insira um cupom de desconto.',
                       controller: discountController,
-                      alternativeText: 'Enter discount code',
+                      alternativeText: 'Insira um cupom de desconto.',
                     ),
                   ),
                   const SizedBox(
@@ -99,7 +111,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   DsIconButton(
                     icon: Icons.check,
-                    alternativeText: 'Apply coupon',
+                    alternativeText: 'Aplicar cupom.',
                     onPressed: applyDiscount,
                     backgroundColor: DsColors.primary,
                     iconColor: DsColors.onPrimary,
@@ -117,41 +129,53 @@ class _CartPageState extends State<CartPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('Summary', style: DsTypography.highlight),
+                    const Text('Resumo', style: DsTypography.highlight),
                     const SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const Text(
-                          'Subtotal',
-                          style: DsTypography.body,
-                        ),
-                        Text(
-                          '\$${getTotalPrice().toStringAsFixed(2)}',
-                          style: DsTypography.body,
-                        ),
-                      ],
+                    MergeSemantics(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Subtotal',
+                            style: DsTypography.body,
+                          ),
+                          Text(
+                            'R\$${getTotalPrice().toStringAsFixed(2)}',
+                            style: DsTypography.body,
+                            semanticsLabel: '${getTotalPrice().toStringAsFixed(2)} reais',
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 4.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const Text(
-                          'Discount',
-                          style: DsTypography.body,
-                        ),
-                        Text(
-                          '\$${getTotalDiscount().toStringAsFixed(2)}',
-                          style: DsTypography.body,
-                        ),
-                      ],
+                    MergeSemantics(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Desconto',
+                            style: DsTypography.body,
+                          ),
+                          Text(
+                            'R\$${getTotalDiscount().toStringAsFixed(2)}',
+                            semanticsLabel: '${getTotalDiscount().toStringAsFixed(2)} reais',
+                            style: DsTypography.body,
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const Text('Total', style: DsTypography.highlight),
-                        Text('\$${(getTotalPrice() - getTotalDiscount()).toStringAsFixed(2)}', style: DsTypography.highlight),
-                      ],
+                    MergeSemantics(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text('Total', style: DsTypography.highlight),
+                          Text(
+                            'R\$${(getTotalPrice() - getTotalDiscount()).toStringAsFixed(2)}',
+                            style: DsTypography.highlight,
+                            semanticsLabel: '${(getTotalPrice() - getTotalDiscount()).toStringAsFixed(2)} reais',
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -176,10 +200,10 @@ class _CartPageState extends State<CartPage> {
                 ),
               );
             },
-            text: 'Go to Checkout',
+            text: 'Ir para seleção de endereços',
             backgroundColor: DsColors.primary,
             textColor: DsColors.onPrimary,
-            alternativeText: 'Go to checkout',
+            alternativeText: 'Ir para seleção de endereços.',
           ),
         ),
       ),

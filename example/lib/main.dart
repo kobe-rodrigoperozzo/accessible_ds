@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const DismissKeyboard(
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -18,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showSemanticsDebugger: false,
       title: 'Accessible Design System: Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -152,17 +151,18 @@ class DismissKeyboard extends StatelessWidget {
 
 Product returnProduct() {
   return Product(
-    title: 'Product Title',
-    id: 'Product Id',
+    title: 'Tênis Modelo 5',
+    id: 'T5A3B3',
     price: 50.00,
     discountedPrice: 50.00,
-    seller: 'seller',
+    seller: 'Loja ABC',
     imageUrl: 'https://imgnike-a.akamaihd.net/768x768/02569651.jpg',
-    description: 'Product Description',
-    rating: 5,
+    description:
+        'Quando seus treinos chegam ao âmago da questão, o Tênis Modelo 5 pode encontrá-lo nas profundezas, ajudá-lo a cavar fundo para encontrar aquela gota final de força e sair do outro lado em alta. Ele combina estilo com substância, flexibilidade do antepé com estabilidade de backend, perfeito para voar durante um dia de cardio ou melhorar sua agilidade. Um cabedal renovado facilita na hora de calçar com um colarinho feito para o seu tornozelo.',
+    rating: 4,
     variations: [
       Variation(
-        type: 'Size',
+        type: 'Tamanho',
         options: [
           '34',
           '35',
@@ -178,11 +178,11 @@ Product returnProduct() {
         ],
       ),
       Variation(
-        type: 'Colors',
+        type: 'Cor',
         options: [
-          'red',
-          'blue',
-          'green',
+          'Vermelho',
+          'Azul',
+          'Verde',
         ],
       ),
     ],

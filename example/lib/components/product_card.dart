@@ -43,32 +43,32 @@ class _ProductCardState extends State<ProductCard> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Edit Quantity'),
+            title: const Text('Editar quantidade'),
             content: DsInputTextField(
               controller: quantityController,
-              label: 'Quantity',
-              alternativeText: 'Edit quantity',
+              label: 'Quantidade',
+              alternativeText: 'Inserir quantidade desejada.',
               keyboardType: TextInputType.number,
               inputTextStyle: DsTypography.body,
             ),
             actions: <Widget>[
               DsTextButton(
-                text: 'Cancel',
+                text: 'Cancelar',
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                alternativeText: 'Cancel edit',
-                backgroundColor: DsColors.primary,
+                alternativeText: 'Cancelar',
+                backgroundColor: Colors.transparent,
                 textColor: DsColors.primary,
               ),
               DsTextButton(
-                text: 'OK',
+                text: 'Confirmar',
                 onPressed: () {
                   widget.product.quantity.value = int.parse(quantityController.text);
                   widget.onQuantityChanged(widget.product.quantity.value);
                   Navigator.of(context).pop();
                 },
-                alternativeText: 'Confirm edit',
+                alternativeText: 'Confirmar',
               ),
             ],
           );
@@ -79,7 +79,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -87,9 +87,9 @@ class _ProductCardState extends State<ProductCard> {
               children: [
                 DsImage(
                   imageUrl: widget.product.imageUrl,
-                  altText: 'Product Image',
-                  width: 100,
-                  height: 100,
+                  altText: 'Imagem: Tênis Modelo 5 Masculino',
+                  width: 90,
+                  height: 90,
                 ),
                 const SizedBox(width: 16.0),
                 Column(
@@ -99,13 +99,14 @@ class _ProductCardState extends State<ProductCard> {
                       widget.product.title,
                       style: DsTypography.body.copyWith(color: Colors.black),
                     ),
+                    // Text(
+                    //   widget.product.id,
+                    //   style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
+                    // ),
                     Text(
-                      widget.product.id,
+                      'R\$${widget.product.price.toStringAsFixed(2)}',
                       style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
-                    ),
-                    Text(
-                      '\$${widget.product.price.toStringAsFixed(2)}',
-                      style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
+                      semanticsLabel: '${widget.product.price.toStringAsFixed(2)} reais',
                     ),
                     ...widget.product.variations.map((variation) {
                       return Text(
@@ -114,7 +115,7 @@ class _ProductCardState extends State<ProductCard> {
                       );
                     }).toList(),
                     Text(
-                      'Quantity: ${widget.product.quantity.value}',
+                      'Quantidade: ${widget.product.quantity.value}',
                       style: DsTypography.normal.copyWith(color: const Color(0xFF3A3B3C)),
                     ),
                   ],
@@ -126,13 +127,13 @@ class _ProductCardState extends State<ProductCard> {
                 DsIconButton(
                   icon: Icons.delete,
                   onPressed: () {
-                    debugPrint('Remove item');
+                    debugPrint('Remover item');
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,
-                  alternativeText: 'Remove item',
+                  alternativeText: 'Remover item do carrinho.',
                 ),
-                const SizedBox(width: 5.0),
+                const SizedBox(width: 2.0),
                 DsIconButton(
                   icon: Icons.edit,
                   onPressed: () {
@@ -140,7 +141,7 @@ class _ProductCardState extends State<ProductCard> {
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,
-                  alternativeText: 'Edit quantity',
+                  alternativeText: 'Editar quantidade.',
                 ),
               ],
             ),

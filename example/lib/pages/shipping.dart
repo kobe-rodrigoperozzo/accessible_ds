@@ -21,8 +21,8 @@ class _ShippingPageState extends State<ShippingPage> {
   int? selectedAddressIndex;
 
   List<ShippingMethod> shippingMethods = [
-    ShippingMethod(method: 'Faster method', price: 10.0),
-    ShippingMethod(method: 'Cheaper method', price: 5.0),
+    ShippingMethod(method: 'Mais rápido', price: 10.0),
+    ShippingMethod(method: 'Mais barato', price: 5.0),
   ];
   int? selectedShippingMethodIndex;
 
@@ -50,21 +50,21 @@ class _ShippingPageState extends State<ShippingPage> {
       backgroundColor: DsColors.foundation,
       appBar: AppBar(
         backgroundColor: DsColors.primary,
-        title: const Text('Shipping'),
+        title: const Text('Entrega'),
       ),
       body: addresses.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('No Addresses', style: DsTypography.body),
+                  const Text('Nenhum endereço cadastrado', style: DsTypography.body),
                   const SizedBox(
                     height: 8.0,
                   ),
                   DsTextButton(
                     onPressed: addAddress,
-                    text: 'Add an address',
-                    alternativeText: 'Add an address',
+                    text: 'Adicionar endereço',
+                    alternativeText: 'Adicionar endereço.',
                   ),
                 ],
               ),
@@ -91,8 +91,8 @@ class _ShippingPageState extends State<ShippingPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: DsTextButton(
                     onPressed: addAddress,
-                    text: 'Add an address',
-                    alternativeText: 'Add an address',
+                    text: 'Adicionar endereço',
+                    alternativeText: 'Adicionar endereço.',
                   ),
                 ),
                 if (selectedAddressIndex != null) ...[
@@ -139,12 +139,13 @@ class _ShippingPageState extends State<ShippingPage> {
                           ),
                         );
                       },
-                text: 'Proceed to payments',
-                alternativeText: 'Proceed to payments',
+                text: 'Ir para o pagamento',
+                alternativeText: 'Ir para o pagamento',
               ),
               Text(
-                '\$${(widget.totalPrice + selectedShippingMethodPrice).toStringAsFixed(2)}',
+                'R\$${(widget.totalPrice + selectedShippingMethodPrice).toStringAsFixed(2)}',
                 style: DsTypography.highlight.copyWith(color: DsColors.onPrimary, fontSize: 20.0),
+                semanticsLabel: '${(widget.totalPrice + selectedShippingMethodPrice).toStringAsFixed(2)} reais',
               ),
             ],
           ),
@@ -205,8 +206,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
             const SizedBox(height: 8),
             DsInputTextField(
               controller: postalCodeController,
-              label: 'Postal Code',
-              alternativeText: 'Postal Code',
+              label: 'CEP',
+              alternativeText: 'Inserir o CEP.',
               keyboardType: const TextInputType.numberWithOptions(signed: true),
               textInputAction: TextInputAction.next,
             ),
@@ -214,8 +215,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
             const SizedBox(height: 4),
             DsInputTextField(
               controller: streetController,
-              label: 'Street',
-              alternativeText: 'Street',
+              label: 'Rua',
+              alternativeText: 'Inserir a rua.',
               textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 12),
@@ -229,8 +230,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       const SizedBox(height: 4),
                       DsInputTextField(
                         controller: numberController,
-                        label: 'Number',
-                        alternativeText: 'Number',
+                        label: 'Número.',
+                        alternativeText: 'Inserir o número.',
                         keyboardType: const TextInputType.numberWithOptions(signed: true),
                         textInputAction: TextInputAction.next,
                       ),
@@ -245,8 +246,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       const SizedBox(height: 4),
                       DsInputTextField(
                         controller: complementController,
-                        label: 'Complement',
-                        alternativeText: 'Complement',
+                        label: 'Complemento',
+                        alternativeText: 'Inserir o complemento.',
                         textInputAction: TextInputAction.next,
                       ),
                     ],
@@ -265,8 +266,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       const SizedBox(height: 4),
                       DsInputTextField(
                         controller: neighborhoodController,
-                        label: 'Neighborhood',
-                        alternativeText: 'Neighborhood',
+                        label: 'Bairro',
+                        alternativeText: 'Inserir o bairro.',
                         textInputAction: TextInputAction.next,
                       ),
                     ],
@@ -280,8 +281,8 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       const SizedBox(height: 4),
                       DsInputTextField(
                         controller: cityController,
-                        label: 'City',
-                        alternativeText: 'City',
+                        label: 'Cidade',
+                        alternativeText: 'Inserir a cidade.',
                         textInputAction: TextInputAction.done,
                       ),
                     ],
@@ -296,12 +297,12 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                 DsTextButton(
                   backgroundColor: DsColors.foundation,
                   textColor: Colors.black,
-                  text: 'Close',
+                  text: 'Fechar',
                   onPressed: () => Navigator.pop(context),
-                  alternativeText: 'Close',
+                  alternativeText: 'Fechar',
                 ),
                 DsTextButton(
-                  text: 'Register',
+                  text: 'Cadastrar',
                   onPressed: () {
                     if (postalCodeController.text.isNotEmpty &&
                         streetController.text.isNotEmpty &&
@@ -324,7 +325,7 @@ class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
                       });
                     }
                   },
-                  alternativeText: 'Register',
+                  alternativeText: 'Cadastrar endereço.',
                 ),
               ],
             ),

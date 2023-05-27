@@ -36,7 +36,7 @@ class _AddressCardState extends State<AddressCard> {
                   },
                   backgroundColor: Colors.transparent,
                   iconColor: Colors.blue,
-                  alternativeText: widget.isSelected ? 'Address selected' : 'Select this address',
+                  alternativeText: widget.isSelected ? 'Endereço selecionado.' : 'Selecionar endereço.',
                 ),
                 const SizedBox(width: 16.0),
                 Column(
@@ -80,7 +80,7 @@ class _AddressCardState extends State<AddressCard> {
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,
-                  alternativeText: 'Edit address',
+                  alternativeText: 'Editar endereço.',
                   iconSize: 18, // adjust icon size here
                   padding: 0,
                 ),
@@ -91,7 +91,7 @@ class _AddressCardState extends State<AddressCard> {
                   },
                   backgroundColor: DsColors.primary,
                   iconColor: DsColors.onPrimary,
-                  alternativeText: 'Delete address',
+                  alternativeText: 'Deletar endereço.',
                   iconSize: 18, // adjust icon size here
                   padding: 0,
                 ),

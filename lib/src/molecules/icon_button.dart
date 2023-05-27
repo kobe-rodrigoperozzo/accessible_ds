@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:accessible_ds/accessible_ds.dart';
 import 'package:accessible_ds/src/utils/color_contrast.dart';
+import 'package:flutter/rendering.dart';
 
 class DsIconButton extends StatelessWidget {
   final IconData icon;
@@ -30,8 +31,9 @@ class DsIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: alternativeText,
+      label: 'Botão: $alternativeText',
       button: true,
+      excludeSemantics: false,
       child: MaterialButton(
         minWidth: 48,
         elevation: 0,

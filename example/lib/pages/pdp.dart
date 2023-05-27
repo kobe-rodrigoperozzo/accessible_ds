@@ -36,11 +36,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           DsIconButton(
             icon: Icons.shopping_cart,
             onPressed: () {
-              debugPrint('Go to cart');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  // TODO: add another product
+                  builder: (context) => CartPage(
+                    products: [],
+                  ),
+                ),
+              );
             },
             backgroundColor: DsColors.primary,
             iconColor: DsColors.onPrimary,
-            alternativeText: 'Go to cart',
+            alternativeText: 'Ir para o carrinho.',
           ),
         ],
       ),
@@ -53,7 +61,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Center(
                 child: DsImage(
                   imageUrl: widget.product.imageUrl,
-                  altText: 'Product Image',
+                  altText: 'Imagem: Tênis Modelo 5 Masculino',
                   width: 300,
                   height: 300,
                 ),
@@ -64,7 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 style: DsTypography.subtitle,
               ),
               Text(
-                'Product Id: ${widget.product.id}',
+                'ID do produto: ${widget.product.id}',
                 style: DsTypography.body,
               ),
               const SizedBox(height: 16.0),
@@ -72,19 +80,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '\$50.00', // Assume price as hardcoded for now
+                    'R\$${widget.product.price.toStringAsFixed(2)}',
                     style: DsTypography.title.copyWith(color: DsColors.primary),
+                    semanticsLabel: '${widget.product.price.toStringAsFixed(2)} reais',
                   ),
-                  Row(
-                    children: List.generate(
-                      widget.product.rating.round(),
-                      (index) => const Icon(Icons.star, color: DsColors.primary),
+                  Semantics(
+                    label: '${widget.product.rating} estrelas',
+                    child: Row(
+                      children: List.generate(
+                        widget.product.rating.round(),
+                        (index) => const Icon(Icons.star, color: DsColors.primary),
+                      ),
                     ),
                   ),
                 ],
               ),
               Text(
-                'Sold by: ${widget.product.seller}',
+                'Vendido por ${widget.product.seller}',
                 style: DsTypography.body.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 16.0),
@@ -114,40 +126,99 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: DsTextButton(
             onPressed: () {
               if (_checkVariations()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  DsSnackBar(
-                    duration: const Duration(seconds: 7),
-                    text: 'Product added.',
-                    actionLabel: 'Go to cart',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CartPage(
-                            products: [
-                              widget.product,
-                            ],
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   DsSnackBar(
+                //     duration: const Duration(seconds: 7),
+                //     text: 'Produto ${widget.product.title} adicionado ao carrinho. Clique no botão ao lado para ser redirecionado.',
+                //     actionLabel: 'Carrinho',
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => CartPage(
+                //             products: [
+                //               getSelectedProductWithVariations(),
+                //             ],
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // );
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Center(child: Text('Sucesso!')),
+                        content: const Text('Produto adicionado com sucesso ao carrinho.'),
+                        actions: <Widget>[
+                          Center(
+                            child: DsTextButton(
+                              text: 'Ir para o carrinho',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CartPage(
+                                      products: [
+                                        getSelectedProductWithVariations(),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              alternativeText: 'Ir para o carrinho.',
+                            ),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Center(
+                            child: DsTextButton(
+                              text: 'Permanecer no produto',
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              alternativeText: 'Permanecer no produto.',
+                              backgroundColor: Colors.transparent,
+                              textColor: DsColors.primary,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 28.0,
+                          )
+                        ],
                       );
-                    },
-                  ),
-                );
+                    });
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   DsSnackBar(
-                    text: 'Please, select all variations.',
+                    text: 'Por favor, selecione todas as variações.',
                   ),
                 );
               }
             },
-            text: 'Add to Cart',
+            text: 'Adicionar ao carrinho.',
             backgroundColor: DsColors.primary,
             textColor: DsColors.onPrimary,
-            alternativeText: 'Add to cart',
+            alternativeText: 'Adicionar ao carrinho.',
           ),
         ),
       ),
+    );
+  }
+
+  Product getSelectedProductWithVariations() {
+    return Product(
+      id: widget.product.id,
+      title: widget.product.title,
+      imageUrl: widget.product.imageUrl,
+      price: widget.product.price,
+      rating: widget.product.rating,
+      seller: widget.product.seller,
+      description: widget.product.description,
+      variations: _selectedVariations,
+      discountedPrice: widget.product.price,
     );
   }
 }
