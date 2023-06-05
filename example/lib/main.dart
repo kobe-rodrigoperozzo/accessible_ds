@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      showSemanticsDebugger: false,
+      showSemanticsDebugger: true,
       title: 'Accessible Design System: Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
