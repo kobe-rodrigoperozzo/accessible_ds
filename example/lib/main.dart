@@ -7,24 +7,15 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const MyApp(),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      showSemanticsDebugger: true,
+    MaterialApp(
+      showSemanticsDebugger: false,
       title: 'Accessible Design System: Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Accessible Design System: Demo'),
-    );
-  }
+    ),
+  );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -127,25 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-// The DismissKeybaord widget (it's reusable)
-class DismissKeyboard extends StatelessWidget {
-  final Widget child;
-  const DismissKeyboard({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        }
-      },
-      child: child,
     );
   }
 }

@@ -15,6 +15,7 @@ dependencies:
   accessible_ds:
     path: ../
   collection: ^1.17.0
+  accessibility_tools: ^0.2.0
 
 dev_dependencies:
   flutter_test:

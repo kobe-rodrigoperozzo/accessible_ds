@@ -31,6 +31,7 @@ class DsIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      textDirection: TextDirection.ltr,
       label: alternativeText,
       button: true,
       excludeSemantics: false,
@@ -39,6 +40,7 @@ class DsIconButton extends StatelessWidget {
         elevation: 0,
         child: Icon(
           icon,
+          semanticLabel: alternativeText,
           size: iconSize,
           color: adjustColorForContrast(iconColor, backgroundColor),
         ),
